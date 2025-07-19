@@ -314,6 +314,40 @@ body {
 }
 
 #selectedProductsList {
+  display: block;
+}
+
+.selected-products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.selected-count {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.clear-all-btn {
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.clear-all-btn:hover {
+  background: #cc0000;
+}
+
+.selected-products-list {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
