@@ -4,6 +4,9 @@ const productsContainer = document.getElementById("productsContainer");
 const selectedProductsList = document.getElementById("selectedProductsList");
 const chatForm = document.getElementById("chatForm");
 const chatWindow = document.getElementById("chatWindow");
+/* New: search input reference and products cache */
+const productSearch = document.getElementById("productSearch");
+let allProducts = [];
 
 /* Array to track selected products */
 let selectedProducts = [];
@@ -75,6 +78,49 @@ async function loadProducts() {
   const response = await fetch("products.json");
   const data = await response.json();
   return data.products;
+}
+
+// Load all products once on startup
+(async function () {
+  allProducts = await loadProducts();
+})();
+
+// Filter products by category and search term then display
+function filterAndDisplayProducts() {
+  const selectedCategory = categoryFilter.value;
+  const searchTerm = productSearch.value.trim().toLowerCase();
+
+  // If no filters, show placeholder
+  if (!selectedCategory && !searchTerm) {
+    productsContainer.innerHTML = `
+      <div class="placeholder-message">
+        Select a category or search to view products
+      </div>
+    `;
+    return;
+  }
+
+  let filtered = allProducts;
+  if (selectedCategory) {
+    filtered = filtered.filter((p) => p.category === selectedCategory);
+  }
+  if (searchTerm) {
+    filtered = filtered.filter(
+      (p) =>
+        p.name.toLowerCase().includes(searchTerm) ||
+        p.brand.toLowerCase().includes(searchTerm) ||
+        p.description.toLowerCase().includes(searchTerm)
+    );
+  }
+  if (filtered.length > 0) {
+    displayProducts(filtered);
+  } else {
+    productsContainer.innerHTML = `
+      <div class="placeholder-message">
+        No products match your criteria.
+      </div>
+    `;
+  }
 }
 
 /* Create HTML for displaying product cards */
@@ -157,18 +203,10 @@ function toggleProductDescription(productId) {
 }
 
 /* Filter and display products when category changes */
-categoryFilter.addEventListener("change", async (e) => {
-  const products = await loadProducts();
-  const selectedCategory = e.target.value;
+categoryFilter.addEventListener("change", filterAndDisplayProducts);
 
-  /* filter() creates a new array containing only products 
-     where the category matches what the user selected */
-  const filteredProducts = products.filter(
-    (product) => product.category === selectedCategory
-  );
-
-  displayProducts(filteredProducts);
-});
+// Filter as user types in search field
+productSearch.addEventListener("input", filterAndDisplayProducts);
 
 /* Toggle product selection when clicked */
 function toggleProductSelection(product, cardElement) {
