@@ -370,7 +370,7 @@ async function getAIResponseWithHistory() {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "gpt-4o",
+      model: "gpt-4o-search-preview",
       messages: conversationHistory,
       max_tokens: 500,
       temperature: 0.7,
@@ -415,7 +415,7 @@ async function getAIResponse(userMessage) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "gpt-4o",
+      model: "gpt-4o-search-preview",
       messages: messages,
       max_tokens: 500,
       temperature: 0.7,
@@ -543,7 +543,7 @@ async function generatePersonalizedRoutine(products) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "gpt-4o",
+      model: "gpt-4o-search-preview",
       messages: messages,
       max_tokens: 1000,
       temperature: 0.7,
@@ -571,16 +571,25 @@ async function generatePersonalizedRoutine(products) {
   }
 }
 
+/* Function to convert URLs in text to clickable links */
+function linkify(text) {
+  // Use a simple regex to find URLs and wrap them in <a> tags
+  const urlPattern = /(https?:\/\/[^\s]+)/g;
+  return text.replace(urlPattern, '<a href="$1" target="_blank">$1</a>');
+}
+
 /* Function to display messages in the chat window */
 function displayChatMessage(message, sender) {
   const messageDiv = document.createElement("div");
   messageDiv.className = `chat-message ${sender}`;
 
   if (sender === "assistant") {
+    // Format newlines and convert URLs to clickable links
+    const formattedMessage = linkify(message.replace(/\n/g, "<br>"));
     messageDiv.innerHTML = `
       <div class="message-content">
         <strong>L'Oréal Advisor:</strong><br>
-        ${message.replace(/\n/g, "<br>")}
+        ${formattedMessage}
       </div>
     `;
   } else {
