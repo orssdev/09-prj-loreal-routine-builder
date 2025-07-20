@@ -572,6 +572,49 @@ button,
   gap: 24px;
   margin: 30px 40px;
 }
+/* —— RTL Language Support —— */
+html[dir="rtl"] .page-wrapper {
+  direction: rtl;
+}
+html[dir="rtl"] .search-section {
+  text-align: right;
+}
+html[dir="rtl"] .search-section::before {
+  left: 20px;
+  right: auto;
+}
+html[dir="rtl"] .search-section input,
+html[dir="rtl"] .search-section select {
+  text-align: right;
+}
+html[dir="rtl"] .products-grid {
+  /* keep grid order but ensure content flows correctly */
+  direction: ltr;
+}
+html[dir="rtl"] .product-card {
+  flex-direction: row-reverse;
+}
+html[dir="rtl"] .product-card .product-info {
+  text-align: right;
+}
+html[dir="rtl"] .selected-products {
+  text-align: right;
+}
+html[dir="rtl"] .selected-products-list,
+html[dir="rtl"] .selected-products-header {
+  display: grid;
+  direction: ltr;
+}
+html[dir="rtl"] .selected-product-item {
+  flex-direction: row-reverse;
+}
+html[dir="rtl"] .selected-product-item .product-details {
+  text-align: right;
+}
+html[dir="rtl"] .chatbox,
+html[dir="rtl"] .chat-window {
+  direction: rtl;
+}
 
 .product-card {
   border: 2px solid var(--loreal-border);
